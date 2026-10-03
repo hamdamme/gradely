@@ -1,4 +1,10 @@
 const main = document.querySelector('main');
+// Keep the accessibility skip link independent of hash-based routing.
+document.querySelector('.skip').addEventListener('click', event => {
+  event.preventDefault();
+  main.focus();
+  main.scrollIntoView();
+});
 const assignments = [
   { id: 1, title: 'Selenium Login Test', description: 'Build a reliable login test suite. Cover successful sign-in, invalid credentials, and input validation.', tags: ['Selenium', 'TestNG', 'Maven'], status: 'In progress', due: 'Oct 8', attempts: '1 of 3 attempts', action: 'Continue assignment', link: '#submit/1' },
   { id: 2, title: 'API Response Validation', description: 'Verify the details that matter. Test response codes, JSON schemas, and error handling.', tags: ['REST Assured', 'TestNG'], status: 'Not started', due: 'Oct 12', attempts: '0 of 3 attempts', action: 'Start assignment', link: '#submit/2' },
@@ -34,7 +40,16 @@ function submissionPage(id) {
   };
 }
 function resultsPage() {
-  main.innerHTML = `<a class="back" href="#assignments">‹ All assignments</a>` + heading('SUBMISSION / DEMO-003', hasSubmitted ? 'Your sample results are ready.' : 'A stronger foundation.', 'Java Fundamentals · Demonstration report · Oct 2, 2026') + `<div class="panel score"><div class="score-ring">86</div><div><h2>Good work. Keep refining.</h2><p class="muted">9 of 10 tests passed · 80% line coverage · 1 security finding</p><span class="badge">Sample graded result</span></div></div><section class="panel"><div class="tabs" role="tablist" aria-label="Feedback sections">${['Tests', 'Security', 'Hints'].map(t => `<button role="tab" id="tab-${t}" aria-controls="feedback-content" aria-selected="${t === tab}" class="${t === tab ? 'selected' : ''}" data-tab="${t}">${t}${t === 'Security' ? ' (1)' : ''}</button>`).join('')}</div><div id="feedback-content" role="tabpanel" aria-labelledby="tab-${tab}"></div></section>`;
+  main.innerHTML = `<a class="back" href="#assignments">‹ All assignments</a>` + heading('SUBMISSION / DEMO-003', hasSubmitted ? 'Your sample results are ready.' : 'A stronger foundation.', (hasSubmitted ? 'Simulation complete · Showing the Java Fundamentals sample report' : 'Java Fundamentals · Demonstration report · Oct 2, 2026')) + `<div class="panel score"><div class="score-ring">86</div><div><h2>Good work. Keep refining.</h2><p class="muted">9 of 10 tests passed · 80% line coverage · 1 security finding</p><span class="badge">Sample graded result</span></div></div><section class="panel"><div class="tabs" role="tablist" aria-label="Feedback sections">${['Tests', 'Security', 'Hints'].map(t => `<button role="tab" id="tab-${t}" aria-controls="feedback-content" aria-selected="${t === tab}" class="${t === tab ? 'selected' : ''}" data-tab="${t}">${t}${t === 'Security' ? ' (1)' : ''}</button>`).join('')}</div><div id="feedback-content" role="tabpanel" aria-labelledby="tab-${tab}"></div></section>`;
+  main.querySelectorAll('[data-tab]').forEach((button, index, buttons) => {
+    button.tabIndex = button.dataset.tab === tab ? 0 : -1;
+    button.onkeydown = event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
+      buttons[next].click();
+    };
+  });
   main.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { tab = b.dataset.tab; resultsPage(); document.querySelector(`#tab-${tab}`).focus(); });
   const content = document.querySelector('#feedback-content');
   if (tab === 'Tests') content.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Test case</th><th>Result</th><th>Duration</th></tr></thead><tbody>${['emptyCollectionReturnsZero', 'singleItemCount', 'multipleItemCount', 'duplicateItemsHandled', 'sortAscending', 'sortDescending', 'missingItemReturnsEmpty', 'validInputAccepted', 'exceptionsHaveMessage', 'nullInputRejected'].map((name, i) => `<tr><td><code>${name}</code>${i === 9 ? '<details><summary>See failure</summary><pre>AssertionError: expected IllegalArgumentException\nActual: NullPointerException\n at CollectionsTest.java:42</pre></details>' : ''}</td><td><span class="badge ${i === 9 ? 'amber' : ''}">${i === 9 ? 'Failed' : 'Passed'}</span></td><td>${12 + i * 3} ms</td></tr>`).join('')}</tbody></table></div>`;
