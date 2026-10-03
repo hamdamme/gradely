@@ -1,4 +1,4 @@
-# Grader
+# Gradely
 
 Automated grading and security feedback for Java test-automation students.
 
@@ -32,12 +32,8 @@ Work in short-lived feature branches once the initial foundation is reviewed. Ke
 
 Check JavaScript syntax with `node --check frontend/app.js`. Open the prototype in a browser to verify behavior. No package installation is required to run it. The prototype does not implement the production React or Spring Boot stack yet.
 
-## GitHub setup
-The local repository is on `main`. A GitHub remote is not configured yet because the saved CLI login is invalid. After authenticating:
+## GitHub repository
 
-```sh
-gh auth login -h github.com
-gh repo create grader --private --source=. --remote=origin --push
-```
+Target: https://github.com/hamdamme/gradely (public). Publication status is recorded in docs/HANDOFF.md.
 
-If a repository named grader already exists, inspect it before using it; do not overwrite an existing remote.
+The project was renamed from Grader to Gradely on October 3, 2026. The original requirements remain unmodified in docs/BUILD_SPEC.md for traceability.

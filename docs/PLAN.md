@@ -7,8 +7,8 @@ Target dates use America/Chicago. This is a working estimate, not a promise that
 - [x] Build student prototype; validate filtering, feedback, hints and missing-file state.
 - [ ] Recheck full ZIP-selection simulation (browser session interrupted).
 - [ ] Review prototype with the project owner.
-- [x] Move repository to Desktop/grader.
-- [ ] Publish a private GitHub repository after CLI authentication.
+- [x] Move repository to Desktop/gradely.
+- [ ] Publish a public GitHub repository after CLI authentication.
 
 Stop after prototype validation and handoff. Do not begin backend implementation today.
 
