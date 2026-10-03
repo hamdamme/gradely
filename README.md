@@ -16,3 +16,28 @@ Open http://localhost:5173. All records are fictional demonstration data.
 
 ## License
 MIT — see LICENSE.
+
+## Repository layout
+
+```text
+frontend/       Local browser prototype (HTML, CSS, JavaScript)
+docs/BUILD_SPEC.md  Original requirements, preserved as reference
+docs/PLAN.md     Four-day working plan and stop point
+docs/HANDOFF.md  Completed checks and next session
+DECISIONS.md     Scope and architecture decisions
+```
+
+## Development workflow
+Work in short-lived feature branches once the initial foundation is reviewed. Keep commits focused on a coherent change; document why a revision is needed. Never commit credentials, node_modules, build output, or student submissions.
+
+Check JavaScript syntax with `node --check frontend/app.js`. Open the prototype in a browser to verify behavior. No package installation is required to run it. The prototype does not implement the production React or Spring Boot stack yet.
+
+## GitHub setup
+The local repository is on `main`. A GitHub remote is not configured yet because the saved CLI login is invalid. After authenticating:
+
+```sh
+gh auth login -h github.com
+gh repo create grader --private --source=. --remote=origin --push
+```
+
+If a repository named grader already exists, inspect it before using it; do not overwrite an existing remote.

@@ -4,9 +4,11 @@ Target dates use America/Chicago. This is a working estimate, not a promise that
 
 ## October 3 — foundation and prototype
 - [x] Initialize Git, MIT license, ignore rules, and preserve the source spec.
-- [ ] Validate a student workflow with sample data.
+- [x] Build student prototype; validate filtering, feedback, hints and missing-file state.
+- [ ] Recheck full ZIP-selection simulation (browser session interrupted).
 - [ ] Review prototype with the project owner.
-- [ ] Move repository to Desktop and publish a private GitHub repository when access is available.
+- [x] Move repository to Desktop/grader.
+- [ ] Publish a private GitHub repository after CLI authentication.
 
 Stop after prototype validation and handoff. Do not begin backend implementation today.
 
