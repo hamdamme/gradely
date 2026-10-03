@@ -23,3 +23,14 @@ Stop implementation here for today. Next session begins with design feedback, th
 
 ## Design iteration
 Replaced the original green cards with a light developer workspace. Checked assignment filters, result/security navigation and progress values in the browser; no browser errors were reported during these checks. Narrow layout visually checked; desktop content checked with a viewport override, though screenshot capture clipped to the app panel. Corrected malformed attempt/score pairs so progress shows 68 and 86. JavaScript syntax and Git whitespace checks pass.
+
+## React foundation checkpoint
+- Replaced imperative HTML rendering with typed React pages, shared components and hash routing; retained the approved CSS.
+- All 11 tests pass, including file limits, queued/running/results transitions, timer cancellation, assignment filtering, keyboard tabs and missing routes. These tests use jsdom, not a native file chooser.
+- TypeScript check and Vite production build pass; npm audit reports zero vulnerabilities.
+- Frontend CI workflow is committed but has not run on GitHub.
+- The React preview rendered assignment content in the browser; subsequent screenshot/interaction checks were interrupted when the browser session lost the tab.
+- Use `cd frontend && npm ci && npm run dev`; new preview is http://127.0.0.1:5176. Python preview instructions are obsolete.
+- GitHub authentication is still inaccessible to the agent process; no remote or push is confirmed.
+
+Stop here. Next implementation checkpoint is the Spring Boot service and local infrastructure, beginning with health/configuration and database migrations. Authentication and real submissions follow only after those checks pass.

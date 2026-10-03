@@ -22,3 +22,10 @@ The owner chose Gradely as the project name and explicitly requested public GitH
 
 ## 2026-10-03: light developer workspace
 The owner rejected the green card-based design as too similar to their personal website and selected a light workspace. Replace it with charcoal navigation, blue actions, assignment rows and a desktop review panel. Keep existing prototype behavior and sample-data disclosures.
+
+## 2026-10-03: React foundation checkpoint
+The owner requested the next step after the light redesign. Port the approved UI to React/TypeScript now, while keeping backend implementation deferred. Use HashRouter to preserve local link behavior without server rewrite rules, split fixtures from components, and add tests for validation, timer cleanup and keyboard navigation.
+
+The initial install of spec-era Vite 5, Router 6 and Vitest 3 reported six dependency findings. Upgrade to Vite 8.3.2, Router 7.18.4 and Vitest 5.0.3 with plugin-react 6.1.1; TypeScript 5.5 could not parse the plugin declarations, so use the compatible installed TypeScript 7.0.2. Keep React 18.3.1. The resulting npm audit reports zero findings. Exact dependencies and transitive resolutions are committed. Node 24 is used for local verification and CI.
+
+Preview uses port 5176 because the earlier Python service still owns 5174 and could not be terminated by this environment. No production services or student code execution were added.

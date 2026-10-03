@@ -5,15 +5,16 @@ Target dates use America/Chicago. This is a working estimate, not a promise that
 ## October 3 — foundation and prototype
 - [x] Initialize Git, MIT license, ignore rules, and preserve the source spec.
 - [x] Build student prototype; validate filtering, feedback, hints and missing-file state.
-- [ ] Recheck full ZIP-selection simulation (browser session interrupted).
-- [ ] Review prototype with the project owner.
+- [x] Verify ZIP validation and complete simulated grading lifecycle in component tests.
+- [ ] Complete native browser file-chooser verification.
+- [x] Review prototype with the project owner; light developer-workspace direction selected.
 - [x] Move repository to Desktop/gradely.
 - [ ] Publish a public GitHub repository after CLI authentication.
 
 Stop after prototype validation and handoff. Do not begin backend implementation today.
 
 ## October 4 — application foundation
-Port the approved UI to React/TypeScript. Bootstrap Spring Boot, database migrations, role-based auth, cohorts and assignments. Add meaningful tests and CI. Validate authorization across cohort boundaries.
+React/TypeScript port completed early at the owner's request on October 3. Bootstrap Spring Boot, database migrations, role-based auth, cohorts and assignments. Add meaningful tests and CI. Validate authorization across cohort boundaries.
 
 ## October 5 — submission and grading
 Add storage, queue, and isolated worker. Prove offline Maven dependencies, output extraction, timeout cleanup, and gVisor availability before executing untrusted submissions. Add grading and scanning incrementally.
