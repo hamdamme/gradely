@@ -16,7 +16,7 @@
 - Production acceptance tests T01–T32 have not been run or satisfied.
 
 ## Remaining setup
-GitHub CLI reports an invalid stored login. No remote repository has been created and no code pushed. Authenticate using `gh auth login -h github.com`, then create the public gradely repository from this checkout.
+The owner successfully authenticated as hamdamme in Terminal. The agent command environment cannot use that authentication, and Terminal UI access is blocked. No remote repository or push has been confirmed. From the authenticated Terminal, run: `gh repo create gradely --public --source=/Users/nazar/Desktop/gradely --remote=origin --push`. The original Desktop/grader folder is retained as a backup; continue work in Desktop/gradely.
 
 ## Stop point
 Stop implementation here for today. Next session begins with design feedback, the GitHub setup if still pending, and the React/TypeScript port. Instructor flows, login and backend features remain planned work. Do not create artificial revisions to fill the schedule.
