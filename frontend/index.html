@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Grader student workspace — local interaction prototype.">
+  <title>Grader · Student workspace</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <aside class="sidebar">
+    <a class="brand" href="#assignments"><span class="brand-icon">g</span>grader<span class="brand-period">.</span></a>
+    <div class="workspace-label">STUDENT WORKSPACE</div>
+    <nav aria-label="Main navigation">
+      <a href="#assignments" data-nav="assignments"><span aria-hidden="true">▦</span> Assignments <small>3</small></a>
+      <a href="#progress" data-nav="progress"><span aria-hidden="true">↗</span> My progress</a>
+      <a href="#results" data-nav="results"><span aria-hidden="true">≡</span> Latest feedback</a>
+    </nav>
+    <div class="cohort"><span class="workspace-label">YOUR COHORT</span><strong>SDET–Batch 16</strong><span>Oct 2026 – Mar 2027</span><div class="cohort-track"><span></span></div><span>Week 1 of 26</span></div>
+    <div class="profile"><div class="avatar">AL</div><div><strong>Alex Lee</strong><span>Student · Demo account</span></div></div>
+  </aside>
+  <div class="shell">
+    <header class="topbar"><span>Workspace <span class="slash">/</span> <span id="crumb">Assignments</span></span><span class="demo-tag">PROTOTYPE · SAMPLE DATA</span></header>
+    <main id="main" tabindex="-1"></main>
+    <footer>Grader / Learning through better feedback <span>Local prototype · No code is executed</span></footer>
+  </div>
+</body>
+</html>
