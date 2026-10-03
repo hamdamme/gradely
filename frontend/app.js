@@ -61,15 +61,15 @@ function assignmentPage() {
   );
   main.innerHTML =
     heading(
-      "KEEP BUILDING",
-      "Your next step starts here.",
-      "Practice, submit, and turn feedback into progress.",
+      "SDET–BATCH 16",
+      "Assignments",
+      "Manage your submissions and review automated feedback.",
     ) +
     `
-    <div class="stats"><div class="stat"><span class="stat-label">Assignments completed</span><strong>1 <small>/ 3</small></strong><span class="stat-note">Two opportunities ahead</span></div><div class="stat"><span class="stat-label">Best score</span><strong>86 <small>/ 100</small></strong><span class="stat-note positive">Java Fundamentals</span></div><div class="stat"><span class="stat-label">Next deadline</span><strong>Oct 8</strong><span class="stat-note">Selenium Login Test</span></div></div>
-    <div class="section-heading"><h2>Your assignments</h2><div class="filters" aria-label="Filter assignments">${["All assignments", "Active", "Completed"].map((f) => `<button data-filter="${f}" class="${filter === f ? "selected" : ""}" aria-pressed="${filter === f}">${f}</button>`).join("")}</div></div>
-    <div class="cards">${visible.map((a) => `<article class="card"><div class="card-top"><span class="number">0${a.id} / ASSIGNMENT</span>${badge(a.status)}</div><h3>${a.title}</h3><p>${a.description}</p><div class="tags">${a.tags.map((t) => `<span>${t}</span>`).join("")}</div><div class="meta"><span>Due ${a.due}</span><span>${a.attempts}</span></div><a class="button ${a.id !== 1 ? "secondary" : ""}" href="${a.link}">${a.action}</a></article>`).join("")}</div>
-    <div class="feedback"><span class="feedback-icon" aria-hidden="true">✧</span><div><h2>A little feedback. A better next attempt.</h2><p>Your latest review includes test results and one security finding to work through.</p></div><a href="#results">Review feedback</a></div>`;
+    <div class="stats"><div class="stat"><span class="stat-label">Completed</span><strong>1 <small>/ 3 assignments</small></strong></div><div class="stat"><span class="stat-label">Best score</span><strong>86 <small>/ 100</small></strong></div><div class="stat"><span class="stat-label">Next deadline</span><strong>Oct 8 <small>Selenium Login Test</small></strong></div></div>
+    <div class="workbench"><section class="assignment-section"><div class="section-heading"><div class="filters" aria-label="Filter assignments">${["All assignments", "Active", "Completed"].map((f) => `<button data-filter="${f}" class="${filter === f ? "selected" : ""}" aria-pressed="${filter === f}">${f}</button>`).join("")}</div><span class="count">${visible.length} ${visible.length === 1 ? "assignment" : "assignments"}</span></div>
+    <div class="assignment-list">${visible.map((a) => `<article class="assignment-row"><div class="assignment-id">A–0${a.id}</div><div class="assignment-body"><div class="row-heading"><h2>${a.title}</h2>${badge(a.status)}</div><p>${a.description}</p><div class="tags">${a.tags.map((t) => `<span>${t}</span>`).join("")}</div><div class="row-meta"><span>Due ${a.due}, 2026</span><span>${a.attempts}</span><a href="${a.link}" class="button ${a.id !== 1 ? "secondary" : ""}">${a.action}</a></div></div></article>`).join("")}</div></section>
+    <aside class="review-rail"><div class="rail-label">LATEST REVIEW <span>DEMO-003</span></div><h2>Java Fundamentals</h2><div class="review-score">86<span>/ 100</span></div><div class="score-track"><span></span></div><dl><div><dt>Tests passed</dt><dd>9 / 10</dd></div><div><dt>Line coverage</dt><dd>80%</dd></div><div><dt>Security findings</dt><dd class="error">1 critical</dd></div></dl><div class="rail-failure"><span class="failure-label">FAILING TEST</span><code>nullInputRejected</code><p>Expected IllegalArgumentException; received NullPointerException.</p></div><a class="button secondary" href="#results">Open full report</a><p class="notice">Sample feedback · Oct 2, 2026</p></aside></div>`;
   main.querySelectorAll("[data-filter]").forEach(
     (b) =>
       (b.onclick = () => {
@@ -121,14 +121,12 @@ function resultsPage() {
     `<a class="back" href="#assignments">‹ All assignments</a>` +
     heading(
       "SUBMISSION / DEMO-003",
-      hasSubmitted
-        ? "Your sample results are ready."
-        : "A stronger foundation.",
+      hasSubmitted ? "Simulation report" : "Submission report",
       hasSubmitted
         ? "Simulation complete · Showing the Java Fundamentals sample report"
         : "Java Fundamentals · Demonstration report · Oct 2, 2026",
     ) +
-    `<div class="panel score"><div class="score-ring">86</div><div><h2>Good work. Keep refining.</h2><p class="muted">9 of 10 tests passed · 80% line coverage · 1 security finding</p><span class="badge">Sample graded result</span></div></div><section class="panel"><div class="tabs" role="tablist" aria-label="Feedback sections">${["Tests", "Security", "Hints"].map((t) => `<button role="tab" id="tab-${t}" aria-controls="feedback-content" aria-selected="${t === tab}" class="${t === tab ? "selected" : ""}" data-tab="${t}">${t}${t === "Security" ? " (1)" : ""}</button>`).join("")}</div><div id="feedback-content" role="tabpanel" aria-labelledby="tab-${tab}"></div></section>`;
+    `<div class="panel score"><div class="score-ring">86</div><div><h2>Java Fundamentals</h2><p class="muted">9 of 10 tests passed · 80% line coverage · 1 security finding</p><span class="badge">Sample graded result</span></div></div><section class="panel"><div class="tabs" role="tablist" aria-label="Feedback sections">${["Tests", "Security", "Hints"].map((t) => `<button role="tab" id="tab-${t}" aria-controls="feedback-content" aria-selected="${t === tab}" class="${t === tab ? "selected" : ""}" data-tab="${t}">${t}${t === "Security" ? " (1)" : ""}</button>`).join("")}</div><div id="feedback-content" role="tabpanel" aria-labelledby="tab-${tab}"></div></section>`;
   main.querySelectorAll("[data-tab]").forEach((button, index, buttons) => {
     button.tabIndex = button.dataset.tab === tab ? 0 : -1;
     button.onkeydown = (event) => {
@@ -170,13 +168,13 @@ function resultsPage() {
 function progressPage() {
   main.innerHTML =
     heading(
-      "YOUR LEARNING JOURNEY",
-      "Small steps. Measurable progress.",
+      "SDET–BATCH 16",
+      "My progress",
       "Java Fundamentals · Two sample attempts",
     ) +
     `<section class="panel"><h2>Score by attempt</h2>${[
-      [68],
-      [86],
+      [1, 68],
+      [2, 86],
     ]
       .map(
         ([n, score]) =>

@@ -19,3 +19,6 @@ Default to a public GitHub repository named gradely. Use the existing Git identi
 
 ## 2026-10-03: Gradely branding and public repository
 The owner chose Gradely as the project name and explicitly requested public GitHub visibility. The active checkout is Desktop/gradely. Desktop/grader is retained as the original checkpoint because this environment cannot rename its parent directory. Preserve the original build specification verbatim.
+
+## 2026-10-03: light developer workspace
+The owner rejected the green card-based design as too similar to their personal website and selected a light workspace. Replace it with charcoal navigation, blue actions, assignment rows and a desktop review panel. Keep existing prototype behavior and sample-data disclosures.

@@ -20,3 +20,6 @@ The owner successfully authenticated as hamdamme in Terminal. The agent command 
 
 ## Stop point
 Stop implementation here for today. Next session begins with design feedback, the GitHub setup if still pending, and the React/TypeScript port. Instructor flows, login and backend features remain planned work. Do not create artificial revisions to fill the schedule.
+
+## Design iteration
+Replaced the original green cards with a light developer workspace. Checked assignment filters, result/security navigation and progress values in the browser; no browser errors were reported during these checks. Narrow layout visually checked; desktop content checked with a viewport override, though screenshot capture clipped to the app panel. Corrected malformed attempt/score pairs so progress shows 68 and 86. JavaScript syntax and Git whitespace checks pass.
