@@ -34,3 +34,6 @@ Replaced the original green cards with a light developer workspace. Checked assi
 - GitHub authentication is still inaccessible to the agent process; no remote or push is confirmed.
 
 Stop here. Next implementation checkpoint is the Spring Boot service and local infrastructure, beginning with health/configuration and database migrations. Authentication and real submissions follow only after those checks pass.
+
+## Teacher prototype checkpoint
+Added cohort overview and split source/results review. Refined the design after owner feedback: charcoal sidebar, blue controls, plain sans-serif type and simpler copy. Production preview: http://127.0.0.1:5175/#/studio and http://127.0.0.1:5175/#/review/demo-003. Existing student preview remains available via navigation. All 13 tests pass; build passes. Browser confirmed updated navigation labels and review styling. No backend or real grade changes are implemented. Notes are never sent to students.

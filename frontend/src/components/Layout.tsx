@@ -36,6 +36,13 @@ export function Layout() {
         <Link className="brand" to="/assignments">
           <span className="brand-icon">G</span>Gradely
         </Link>
+        <Link
+          className="back"
+          style={{ margin: "24px 12px 0", color: "#afc8ff" }}
+          to="/studio"
+        >
+          ‹ Teacher studio
+        </Link>
         <div className="workspace-label">STUDENT WORKSPACE</div>
         <nav aria-label="Main navigation">
           <NavLink

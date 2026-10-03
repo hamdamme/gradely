@@ -93,9 +93,7 @@ describe("submission boundaries", () => {
 
 it("filters assignment rows without losing the review panel", async () => {
   renderAt("/assignments");
-  await userEvent.click(
-    screen.getByRole("button", { name: "Completed" }),
-  );
+  await userEvent.click(screen.getByRole("button", { name: "Completed" }));
   const list = screen.getByRole("region", { name: "Assignments" });
   expect(
     within(list).getByRole("heading", { name: "Java Fundamentals" }),
@@ -132,4 +130,37 @@ it("handles unknown assignments and unknown routes", () => {
   page.unmount();
   renderAt("/missing");
   expect(screen.getByRole("heading", { name: "Page not found" })).toBeVisible();
+});
+
+it("opens the selected student from the teacher review queue", async () => {
+  renderAt("/studio");
+  await userEvent.click(
+    screen.getByRole("button", { name: "Needs attention" }),
+  );
+  expect(
+    screen.queryByRole("heading", { name: "Alex Lee" }),
+  ).not.toBeInTheDocument();
+  await userEvent.click(
+    screen.getByRole("link", { name: "Review Maya Patel" }),
+  );
+  expect(screen.getByText("Maya Patel")).toBeVisible();
+  expect(screen.getByText("3 tests need attention")).toBeVisible();
+});
+
+it("connects a security finding to source and keeps review notes local", async () => {
+  renderAt("/review/demo-003");
+  await userEvent.click(screen.getByRole("tab", { name: /Security/ }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Show related source · line 5" }),
+  );
+  expect(screen.getByRole("button", { name: "Config.java" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await userEvent.type(
+    screen.getByLabelText("Your review note"),
+    "Check validation before accessing the collection.",
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Keep draft" }));
+  expect(screen.getByRole("status")).toHaveTextContent("Nothing sent.");
 });

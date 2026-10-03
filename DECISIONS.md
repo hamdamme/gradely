@@ -29,3 +29,6 @@ The owner requested the next step after the light redesign. Port the approved UI
 The initial install of spec-era Vite 5, Router 6 and Vitest 3 reported six dependency findings. Upgrade to Vite 8.3.2, Router 7.18.4 and Vitest 5.0.3 with plugin-react 6.1.1; TypeScript 5.5 could not parse the plugin declarations, so use the compatible installed TypeScript 7.0.2. Keep React 18.3.1. The resulting npm audit reports zero findings. Exact dependencies and transitive resolutions are committed. Node 24 is used for local verification and CI.
 
 Preview uses port 5176 because the earlier Python service still owns 5174 and could not be terminated by this environment. No production services or student code execution were added.
+
+## 2026-10-03: simplified teacher workspace
+The owner requested darker left navigation and a simpler professional appearance. Teacher pages use the earlier charcoal/blue palette, sans-serif headings, white content panels and direct labels. Removed the decorative teaching panel. Teacher cohort overview is /studio; submission review is /review/:id. Student pages remain available. All submissions, code and findings are sample data; review notes are local drafts only.

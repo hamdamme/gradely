@@ -1,4 +1,7 @@
 import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { TeacherLayout } from "./components/TeacherLayout";
+import { StudioPage } from "./pages/StudioPage";
+import { ReviewPage } from "./pages/ReviewPage";
 import { Layout } from "./components/Layout";
 import { NotFound } from "./components/UI";
 import { AssignmentsPage } from "./pages/AssignmentsPage";
@@ -11,11 +14,19 @@ function AssignmentSubmission() {
   const { id } = useParams();
   return <SubmitPage key={id} />;
 }
+function SubmissionReview() {
+  const { id } = useParams();
+  return <ReviewPage key={id} />;
+}
 export function App() {
   return (
     <Routes>
+      <Route element={<TeacherLayout />}>
+        <Route path="studio" element={<StudioPage />} />
+        <Route path="review/:id" element={<SubmissionReview />} />
+      </Route>
       <Route element={<Layout />}>
-        <Route index element={<Navigate to="/assignments" replace />} />
+        <Route index element={<Navigate to="/studio" replace />} />
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="submit/:id" element={<AssignmentSubmission />} />
         <Route path="results" element={<ResultsPage />} />
