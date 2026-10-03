@@ -94,7 +94,7 @@ describe("submission boundaries", () => {
 it("filters assignment rows without losing the review panel", async () => {
   renderAt("/assignments");
   await userEvent.click(
-    screen.getByRole("button", { name: "Completed", exact: true }),
+    screen.getByRole("button", { name: "Completed" }),
   );
   const list = screen.getByRole("region", { name: "Assignments" });
   expect(
@@ -110,7 +110,7 @@ it("filters assignment rows without losing the review panel", async () => {
 
 it("supports arrow-key tabs and reveals sample guidance", async () => {
   renderAt("/results");
-  screen.getByRole("tab", { name: "Tests", exact: true }).focus();
+  screen.getByRole("tab", { name: "Tests" }).focus();
   await userEvent.keyboard("{ArrowRight}");
   expect(screen.getByRole("tab", { name: "Security (1)" })).toHaveFocus();
   expect(screen.getByRole("tabpanel", { name: "Security (1)" })).toBeVisible();
