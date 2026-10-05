@@ -37,3 +37,10 @@ Stop here. Next implementation checkpoint is the Spring Boot service and local i
 
 ## Teacher prototype checkpoint
 Added cohort overview and split source/results review. Refined the design after owner feedback: charcoal sidebar, blue controls, plain sans-serif type and simpler copy. Production preview: http://127.0.0.1:5175/#/studio and http://127.0.0.1:5175/#/review/demo-003. Existing student preview remains available via navigation. All 13 tests pass; build passes. Browser confirmed updated navigation labels and review styling. No backend or real grade changes are implemented. Notes are never sent to students.
+
+## Session 2 — October 4, 2026
+Current checkout: /Users/nazar/Desktop/PROJECTS/gradely. Branch: session-2/backend-foundation. See SESSION_2.md for current setup instructions.
+
+Verified: frontend GitHub Actions succeeded before this session; PostgreSQL/RabbitMQ/MinIO all healthy; RabbitMQ and MinIO consoles return HTTP 200; RabbitMQ authenticated health returns ok; backend health returns HTTP 200/UP; protected routes return 401; startup without JWT_SECRET fails with the variable named; Flyway creates 11 application tables plus its history table; all 17 backend tests pass without skips. Initial MinIO source build succeeded. Production image/provider selection remains open because community MinIO is archived.
+
+New backend CI workflow is added but has not run remotely. Frontend files were not modified. .env, caches and build output are ignored. Untracked gradely_mindtek contains user files and was left untouched. Stop at this checkpoint; next is authentication and access controls. Services are left running for inspection.

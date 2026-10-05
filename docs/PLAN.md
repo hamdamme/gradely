@@ -1,26 +1,20 @@
-# Four-day working plan
+# Planned sessions
 
-Target dates use America/Chicago. This is a working estimate, not a promise that all 32 production acceptance tests fit four days.
+Updated October 4, 2026 (America/Chicago). Eight sessions are a working plan, not a guarantee; sandbox and security integration may require additional time.
 
-## October 3 — foundation and prototype
-- [x] Initialize Git, MIT license, ignore rules, and preserve the source spec.
-- [x] Build student prototype; validate filtering, feedback, hints and missing-file state.
-- [x] Verify ZIP validation and complete simulated grading lifecycle in component tests.
-- [ ] Complete native browser file-chooser verification.
-- [x] Review prototype with the project owner; light developer-workspace direction selected.
-- [x] Move repository to Desktop/gradely.
-- [ ] Publish a public GitHub repository after CLI authentication.
+1. **Complete:** repository, approved UI prototype, React/TypeScript, frontend tests and public GitHub repository.
+2. **Complete locally:** infrastructure, backend configuration/health, migrations, 17 backend tests and backend CI definition. Review and push the feature branch next.
+3. **Next:** entities/repositories, registration/login/refresh, role and cohort access tests.
+4. Teacher workflows: cohort membership and assignment/rubric management.
+5. Real submissions: archive validation, storage, queue and status lifecycle.
+6. Isolated grading: sandbox constraints, timeouts, results, coverage and scoring.
+7. Security scans and AI guidance: findings, severity mapping, hints and caching.
+8. Integration/release preparation: dashboards, overrides, end-to-end tests, CI and reproducible setup.
 
-Stop after prototype validation and handoff. Do not begin backend implementation today.
+## Current stop point
 
-## October 4 — application foundation
-React/TypeScript port completed early at the owner's request on October 3. Bootstrap Spring Boot, database migrations, role-based auth, cohorts and assignments. Add meaningful tests and CI. Validate authorization across cohort boundaries.
-
-## October 5 — submission and grading
-Add storage, queue, and isolated worker. Prove offline Maven dependencies, output extraction, timeout cleanup, and gVisor availability before executing untrusted submissions. Add grading and scanning incrementally.
-
-## October 6 — integration and release candidate
-Wire results, hints and instructor workflows. Run end-to-end checks, document setup and unresolved issues. Defer features that do not meet acceptance criteria; do not call a prototype production-ready.
+Session 2 ends here. Do not add authentication or real student-code execution in this session. Backend tests and live service checks must pass before handoff. Remote backend CI is unverified until the feature branch is pushed.
 
 ## Commit discipline
-One coherent change per commit, with real timestamps and truthful messages. Revise code when requirements or validation justify it. Never add artificial churn or backdate commits. User-requested prototype work supersedes the spec's backend-first task order; T01–T32 remain uncompleted until their actual acceptance tests pass.
+
+One coherent change per commit, real timestamps, no artificial revisions or backdating. User-requested milestones supersede the source spec's strict backend-first order. Production tasks T01–T32 remain subject to their actual acceptance criteria; frontend sample flows do not count as real integrations.

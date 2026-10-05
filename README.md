@@ -4,9 +4,23 @@ Automated grading and security feedback for Java test-automation students.
 
 ## Current milestone
 
-React + TypeScript student prototype with a light developer workspace. Assignment browsing, submission simulation, test results, security feedback, hints, and progress use explicit sample data. No backend, authentication, code execution, real scanning, or AI service is implemented yet.
+Session 2 is complete locally: Java 17 / Spring Boot backend, PostgreSQL migrations, fail-fast configuration and a database-aware health endpoint. Compose runs PostgreSQL, RabbitMQ and MinIO on dedicated loopback ports. Backend checks pass against a disposable PostgreSQL container.
 
-## Run locally
+The approved React prototype remains unchanged: a teacher overview and split submission review, with sample-data student pages. Authentication, real uploads, storage/queue integration, grading and AI remain future sessions.
+
+## Backend and infrastructure
+
+Requires Docker with Compose v2, Java 17, Maven 3.9 and Python 3. From the repository root:
+
+```sh
+python3 scripts/init-dev-env.py   # once; preserves any existing .env
+docker compose up -d --build --wait --wait-timeout 180
+./scripts/backend.sh spring-boot:run
+```
+
+Then open http://127.0.0.1:8080/api/v1/health. Run `./scripts/backend.sh -B -ntp verify` for backend tests. See [Session 2 setup](docs/SESSION_2.md) for service ports, configuration, source-built MinIO, troubleshooting and stop/restart instructions. The first MinIO build can take several minutes. MinIO is a local compatibility dependency; upstream is archived, so production storage selection remains open.
+
+## Run the frontend
 
 Use Node.js 24 LTS (minimum 22.12) and npm.
 
@@ -29,6 +43,10 @@ All file selection is local. No ZIP bytes are uploaded or executed. Simulated su
 ## Structure
 
 ```text
+backend/             Spring Boot application, Flyway migrations and tests
+scripts/             Environment generation and Java 17 Maven launcher
+infra/minio/         Pinned official MinIO source build
+docker-compose.yml   Local PostgreSQL, RabbitMQ and MinIO
 frontend/
   src/
     components/   Shared shell and visual components
@@ -56,13 +74,9 @@ The prototype keeps React 18. Patched Vite, Router, Vitest, and compatible TypeS
 
 ## GitHub
 
-Requested public repository: https://github.com/hamdamme/gradely. Publication has not been confirmed and no remote is configured locally. From the owner's authenticated Terminal, inspect whether it already exists before running:
+Public repository: https://github.com/hamdamme/gradely. Session 1 is published on main and its frontend workflow passed. Session 2 work is committed locally on `session-2/backend-foundation`; a push and remote backend CI run are not yet confirmed.
 
-```sh
-gh repo create gradely --public --source=/Users/nazar/Desktop/gradely --remote=origin --push
-```
-
-If it already exists, inspect its contents and connect the correct remote instead of creating or overwriting a repository.
+[Frontend Actions run verified at session start](https://github.com/hamdamme/gradely/actions/runs/37161397951).
 
 ## License
 

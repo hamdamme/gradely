@@ -32,3 +32,14 @@ Preview uses port 5176 because the earlier Python service still owns 5174 and co
 
 ## 2026-10-03: simplified teacher workspace
 The owner requested darker left navigation and a simpler professional appearance. Teacher pages use the earlier charcoal/blue palette, sans-serif headings, white content panels and direct labels. Removed the decorative teaching panel. Teacher cohort overview is /studio; submission review is /review/:id. Student pages remain available. All submissions, code and findings are sample data; review notes are local drafts only.
+
+## 2026-10-04: Session 2 backend foundation
+Work continues in Desktop/PROJECTS/gradely after the owner moved the checkout. Preserve the unrelated untracked gradely_mindtek folder; it is excluded from this session's commits. Use session-2/backend-foundation for reviewable changes.
+
+Use Java 17 with Maven 3.9 and Spring Boot 3.5.16, a newer patch line than the spec's unsupported 3.3 series. Spring's dependency management selects Flyway/PostgreSQL/Testcontainers versions rather than duplicating pins. Retain com.gradely as the application package. JDBC suffices for this foundation; JPA entities and application APIs are Session 3+.
+
+Use dedicated loopback ports (PostgreSQL 15432, AMQP 5673, RabbitMQ UI 15673, MinIO 19000/19001), because another project already uses 5432. All credentials come from ignored .env, generated randomly instead of shipping usable defaults. JWT_SECRET validation is reserved for the forthcoming auth layer. No demo users are seeded before authentication exists.
+
+The migration preserves the specified DDL, adds the refresh_tokens table from the auth section, and includes lookup indexes. Only the health endpoint is accessible; other requests are denied until authorization is implemented. Health verifies the database; Compose separately verifies the broker and storage.
+
+Official MinIO community image pulls failed; upstream now publishes source only and has archived its repository. Build the last release from a pinned commit and checked archive, retain AGPL licensing and run non-root. This is local compatibility infrastructure, not a production recommendation. PostgreSQL 16 and RabbitMQ 3.13 follow the requested stack; production dependency/support review remains required before a release. No third-party default credentials were added to tracked files.
