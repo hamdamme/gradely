@@ -9,6 +9,21 @@ spring:
       maximum-pool-size: 5
       connection-timeout: 3000
       initialization-fail-timeout: 5000
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 51MB
+      file-size-threshold: 0
+  rabbitmq:
+    host: ${RABBIT_HOST:127.0.0.1}
+    port: ${RABBIT_PORT:5673}
+    username: ${RABBIT_USERNAME:guest}
+    password: ${RABBIT_PASSWORD:guest}
+    connection-timeout: 3s
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
   flyway:
     enabled: true
     clean-disabled: true

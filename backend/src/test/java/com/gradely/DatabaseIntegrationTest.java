@@ -17,7 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.assertj.core.api.Assertions.*;
 
 @Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties="gradely.dispatch.enabled=false")
 class DatabaseIntegrationTest {
     @Container static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:16");
     @DynamicPropertySource static void databaseProperties(DynamicPropertyRegistry properties) {
@@ -34,7 +34,7 @@ class DatabaseIntegrationTest {
     @Test void createsAllTablesAndMigrationIsRepeatable() {
         assertThat(jdbc.queryForList("SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename <> 'flyway_schema_history'", String.class))
                 .containsExactlyInAnyOrder("users", "cohorts", "cohort_members", "assignments", "submissions",
-                        "grading_results", "test_case_results", "security_findings", "hints", "instructor_overrides", "refresh_tokens");
+                        "grading_results", "test_case_results", "security_findings", "hints", "instructor_overrides", "refresh_tokens", "submission_outbox");
         flyway.validate();
         assertThat(flyway.migrate().migrationsExecuted).isZero();
         assertThat(jdbc.queryForList("SELECT indexname FROM pg_indexes WHERE schemaname = 'public'", String.class))
@@ -46,7 +46,7 @@ class DatabaseIntegrationTest {
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(response.getBody()).isEqualTo("{\"status\":\"UP\"}");
     }
-    @Test void nonHealthEndpointsAreClosedUntilAuthenticationExists() {
+    @Test void unknownEndpointsRequireAuthentication() {
         assertThat(http.getForEntity("/api/v1/users", String.class).getStatusCode().value()).isEqualTo(401);
     }
     @Test void rejectsInvalidRole() {
@@ -54,6 +54,10 @@ class DatabaseIntegrationTest {
     }
     @Test void rejectsDuplicateEmail() {
         user("student@fixture.local", "STUDENT");
+        assertThatThrownBy(() -> user("student@fixture.local", "STUDENT")).isInstanceOf(DataIntegrityViolationException.class);
+    }
+    @Test void rejectsCaseVariantEmail() {
+        user("Student@fixture.local", "STUDENT");
         assertThatThrownBy(() -> user("student@fixture.local", "STUDENT")).isInstanceOf(DataIntegrityViolationException.class);
     }
     @Test void rejectsOrphanCohort() {

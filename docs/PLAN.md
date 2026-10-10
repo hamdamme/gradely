@@ -1,19 +1,19 @@
 # Planned sessions
 
-Updated October 4, 2026 (America/Chicago). Eight sessions are a working plan, not a guarantee; sandbox and security integration may require additional time.
+Updated October 9, 2026 (America/Chicago). Eight sessions are a working plan, not a guarantee; sandbox and security integration may require additional time.
 
 1. **Complete:** repository, approved UI prototype, React/TypeScript, frontend tests and public GitHub repository.
-2. **Complete locally:** infrastructure, backend configuration/health, migrations, 17 backend tests and backend CI definition. Review and push the feature branch next.
-3. **Next:** entities/repositories, registration/login/refresh, role and cohort access tests.
-4. Teacher workflows: cohort membership and assignment/rubric management.
-5. Real submissions: archive validation, storage, queue and status lifecycle.
-6. Isolated grading: sandbox constraints, timeouts, results, coverage and scoring.
+2. **Complete and merged:** infrastructure, backend configuration/health, migrations, 17 backend tests and successful GitHub backend CI; PR #1 merged.
+3. **Complete locally:** typed repositories, registration/login/refresh/logout, admin provisioning, role/cohort access; 45 total backend tests pass. Push and remote CI remain pending.
+4. **Complete locally:** teacher cohort creation/enrollment/read APIs, validated assignments and Swagger documentation.
+5. **Complete locally:** ZIP validation, MinIO uploads/downloads, durable RabbitMQ dispatch, attempt/deadline checks and status lifecycle; 62 backend tests pass.
+6. **Next:** isolated grading: sandbox constraints, timeouts, results, coverage and scoring.
 7. Security scans and AI guidance: findings, severity mapping, hints and caching.
 8. Integration/release preparation: dashboards, overrides, end-to-end tests, CI and reproducible setup.
 
 ## Current stop point
 
-Session 2 ends here. Do not add authentication or real student-code execution in this session. Backend tests and live service checks must pass before handoff. Remote backend CI is unverified until the feature branch is pushed.
+Sessions 4 and 5 end here. Teacher and upload APIs are implemented and tested; the frontend remains a sample-data prototype. Session 6 adds sandboxed grading. Accepted submissions remain QUEUED until then. See SESSION_4_5.md for verification, delivery guarantees and limitations.
 
 ## Commit discipline
 

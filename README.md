@@ -4,9 +4,9 @@ Automated grading and security feedback for Java test-automation students.
 
 ## Current milestone
 
-Session 2 is complete locally: Java 17 / Spring Boot backend, PostgreSQL migrations, fail-fast configuration and a database-aware health endpoint. Compose runs PostgreSQL, RabbitMQ and MinIO on dedicated loopback ports. Backend checks pass against a disposable PostgreSQL container.
+Sessions 4 and 5 are complete locally: teacher cohort/assignment APIs, validated ZIP uploads to MinIO, durable queue dispatch and submission status APIs now join the authentication backend. All 62 backend tests pass with disposable PostgreSQL, MinIO and RabbitMQ containers. Compose runs PostgreSQL, RabbitMQ and MinIO on dedicated loopback ports.
 
-The approved React prototype remains unchanged: a teacher overview and split submission review, with sample-data student pages. Authentication, real uploads, storage/queue integration, grading and AI remain future sessions.
+The approved React prototype remains unchanged: a teacher overview and split submission review, with sample-data student pages. UI/API integration, grading and AI remain future work. Real API uploads stay QUEUED until Session 6 adds a worker. See [Sessions 4–5](docs/SESSION_4_5.md) for endpoints, upload limits and delivery behavior, and [Session 3](docs/SESSION_3.md) for optional admin setup.
 
 ## Backend and infrastructure
 
@@ -70,11 +70,11 @@ docs/HANDOFF.md    Verified status and next session
 
 Use short-lived feature branches and commits that represent coherent changes. Record meaningful decisions, run relevant checks, and keep the lockfile committed. Do not commit credentials, dependency folders, build output, or student submissions. CI is configured for frontend changes; a successful local run does not imply a GitHub Actions run has occurred.
 
-The prototype keeps React 18. Patched Vite, Router, Vitest, and compatible TypeScript versions supersede the older build-spec versions; exact installed versions are pinned in package.json and package-lock.json. The visual design and Java/Spring target remain unchanged. Tailwind, charts, API clients and authentication are deferred until needed for the next implementation slices.
+The prototype keeps React 18. Patched Vite, Router, Vitest, and compatible TypeScript versions supersede the older build-spec versions; exact installed versions are pinned in package.json and package-lock.json. The visual design and Java/Spring target remain unchanged. Tailwind, charts and frontend API/authentication integration are deferred until needed for the next implementation slices.
 
 ## GitHub
 
-Public repository: https://github.com/hamdamme/gradely. Session 1 is published on main and its frontend workflow passed. Session 2 work is committed locally on `session-2/backend-foundation`; a push and remote backend CI run are not yet confirmed.
+Public repository: https://github.com/hamdamme/gradely. Session 1 is published on main and its frontend workflow passed. Session 2 was merged through PR #1 and its backend CI passed. Sessions 3–5 are verified locally on `session-4-5/teacher-submissions`; publishing/review and remote CI verification remain pending.
 
 [Frontend Actions run verified at session start](https://github.com/hamdamme/gradely/actions/runs/37161397951).
 

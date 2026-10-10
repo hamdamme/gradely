@@ -43,3 +43,15 @@ Use dedicated loopback ports (PostgreSQL 15432, AMQP 5673, RabbitMQ UI 15673, Mi
 The migration preserves the specified DDL, adds the refresh_tokens table from the auth section, and includes lookup indexes. Only the health endpoint is accessible; other requests are denied until authorization is implemented. Health verifies the database; Compose separately verifies the broker and storage.
 
 Official MinIO community image pulls failed; upstream now publishes source only and has archived its repository. Build the last release from a pinned commit and checked archive, retain AGPL licensing and run non-root. This is local compatibility infrastructure, not a production recommendation. PostgreSQL 16 and RabbitMQ 3.13 follow the requested stack; production dependency/support review remains required before a release. No third-party default credentials were added to tracked files.
+
+## 2026-10-09: Session 3 authentication checkpoint
+Retain typed JDBC repositories instead of introducing JPA alongside the existing JDBC/Flyway stack; only users and cohorts need application models at this milestone. Self-registration is student-only, matching the specification's security section. Admins provision instructors, with an opt-in first-admin bootstrap and no default credentials. Passwords use BCrypt cost 10 with a 12-character minimum and explicit 72-byte UTF-8 limit.
+
+Use HS256 access JWTs and opaque hashed refresh tokens. Rotation is a single PostgreSQL transaction with DELETE RETURNING, tested for concurrency and rollback. Access requests recheck the stored user and role. Logout revokes the supplied refresh token, not outstanding access tokens or other devices; this limitation is documented. Exact-origin CORS and stateless bearer authentication are implemented; the frontend remains a prototype. Account recovery, abuse protection, email verification and production hardening remain release work.
+
+## 2026-10-09: teacher workflows and submission intake
+Implement the specification's create/enroll/read API contracts with owner/admin enforcement; student assignment reads require membership. Rubrics use typed validated records. Restrict the future build command to mvn -B test. Swagger UI documents the API.
+
+Accept only validated ZIP multipart uploads in Session 5; defer Git ingestion and direct presigned PUT because they require separate fetching/staging validation. MinIO storage uses random keys and five-minute authorized downloads. A transactional outbox prevents database/broker dual-write loss, using confirms and durable persistent messages. Delivery remains at least once; worker claims must be idempotent. PostgreSQL student-row locking serializes attempt limits. Cleanup after database rollback is best effort; crash reconciliation remains release work.
+
+Use MinIO Java SDK 9.0.3 with its explicit OkHttp JVM 5.3.2 artifact for Maven, and Commons Compress 1.28.0 for ZIP entry metadata/validation. The real-service tests use the existing pinned source-built MinIO image; CI builds it before testing. No backend extraction or execution, no simulated grading progress, and no frontend design changes are part of these sessions.

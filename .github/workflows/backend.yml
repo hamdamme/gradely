@@ -1,9 +1,9 @@
 name: Backend checks
 on:
   push:
-    paths: ['backend/**', 'scripts/backend.sh', '.github/workflows/backend.yml']
+    paths: ['backend/**', 'scripts/backend.sh', 'infra/minio/**', '.github/workflows/backend.yml']
   pull_request:
-    paths: ['backend/**', 'scripts/backend.sh', '.github/workflows/backend.yml']
+    paths: ['backend/**', 'scripts/backend.sh', 'infra/minio/**', '.github/workflows/backend.yml']
 permissions:
   contents: read
 jobs:
@@ -17,5 +17,7 @@ jobs:
           java-version: '17'
           cache: maven
           cache-dependency-path: backend/pom.xml
-      - name: Unit and PostgreSQL integration tests
+      - name: Build pinned local MinIO test image
+        run: docker build -t gradely-minio:2025-10-15 infra/minio
+      - name: Unit and PostgreSQL, MinIO, RabbitMQ integration tests
         run: mvn --batch-mode --no-transfer-progress -f backend/pom.xml verify
