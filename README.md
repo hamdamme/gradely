@@ -1,4 +1,4 @@
-# Gradely
+# Digital Grader
 
 Automated grading and security feedback for Java test-automation students.
 
