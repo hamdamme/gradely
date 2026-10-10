@@ -29,6 +29,12 @@ public class ApiErrors {
         // Never echo rejected values: requests can contain passwords and tokens.
         return ResponseEntity.badRequest().body(body(HttpStatus.BAD_REQUEST, "Invalid request fields"));
     }
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    ResponseEntity<?> tooLarge(Exception error) { return ResponseEntity.status(413).body(body(HttpStatus.PAYLOAD_TOO_LARGE,"ZIP must be at most 50 MiB")); }
+    @ExceptionHandler({org.springframework.web.multipart.support.MissingServletRequestPartException.class,
+            org.springframework.web.bind.MissingServletRequestParameterException.class,
+            org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class})
+    ResponseEntity<?> missing(Exception error) { return ResponseEntity.badRequest().body(body(HttpStatus.BAD_REQUEST,"Invalid request fields")); }
     @ExceptionHandler(AccessDeniedException.class)
     ResponseEntity<?> denied(AccessDeniedException error) {
         return ResponseEntity.status(403).body(body(HttpStatus.FORBIDDEN, "Access denied"));
