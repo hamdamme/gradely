@@ -15,7 +15,10 @@ public class ZipValidator {
     public static final long MAX_ARCHIVE=50L*1024*1024;
     public static final long MAX_EXPANDED=200L*1024*1024;
     public record Validated(Path path) implements AutoCloseable {
-        @Override public void close() throws IOException { Files.deleteIfExists(path); }
+        @Override public void close() {
+            try { Files.deleteIfExists(path); }
+            catch (IOException error) { org.slf4j.LoggerFactory.getLogger(ZipValidator.class).warn("Temporary upload cleanup failed: {}",path); }
+        }
     }
     public Validated validate(MultipartFile file) {
         if (file.isEmpty() || file.getSize()>MAX_ARCHIVE) throw invalid("ZIP must be non-empty and at most 50 MiB");

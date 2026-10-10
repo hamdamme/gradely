@@ -43,7 +43,8 @@ public class SubmissionService {
         String key="submissions/"+UUID.randomUUID()+".zip";
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override public void afterCompletion(int status) {
-                if (status!=STATUS_COMMITTED) try { storage.delete(key); }
+                // Preserve the object if the database commit outcome is unknown.
+                if (status==STATUS_ROLLED_BACK) try { storage.delete(key); }
                 catch (RuntimeException ignored) { org.slf4j.LoggerFactory.getLogger(SubmissionService.class).warn("Submission object cleanup needs reconciliation: {}",key); }
             }
         });

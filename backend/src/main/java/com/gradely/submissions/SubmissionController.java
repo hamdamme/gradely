@@ -1,6 +1,5 @@
 package com.gradely.submissions;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import com.gradely.users.User;
@@ -18,7 +17,7 @@ public class SubmissionController {
     public SubmissionController(SubmissionService submissions, ZipValidator zip) { this.submissions=submissions; this.zip=zip; }
     @PostMapping(value="/assignments/{id}/submissions",consumes="multipart/form-data")
     @ResponseStatus(HttpStatus.ACCEPTED) @PreAuthorize("hasRole('STUDENT')")
-    public SubmissionService.Accepted submit(@PathVariable long id, @RequestPart("file") MultipartFile file, @AuthenticationPrincipal User.Profile user) throws IOException {
+    public SubmissionService.Accepted submit(@PathVariable long id, @RequestPart("file") MultipartFile file, @AuthenticationPrincipal User.Profile user) {
         submissions.requireStudentAssignment(id,user);
         try (var validated=zip.validate(file)) { return submissions.submit(id,user,validated); }
     }
