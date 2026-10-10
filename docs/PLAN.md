@@ -1,11 +1,11 @@
 # Planned sessions
 
-Updated October 4, 2026 (America/Chicago). Eight sessions are a working plan, not a guarantee; sandbox and security integration may require additional time.
+Updated October 9, 2026 (America/Chicago). Eight sessions are a working plan, not a guarantee; sandbox and security integration may require additional time.
 
 1. **Complete:** repository, approved UI prototype, React/TypeScript, frontend tests and public GitHub repository.
-2. **Complete locally:** infrastructure, backend configuration/health, migrations, 17 backend tests and backend CI definition. Review and push the feature branch next.
-3. **Next:** entities/repositories, registration/login/refresh, role and cohort access tests.
-4. Teacher workflows: cohort membership and assignment/rubric management.
+2. **Complete and merged:** infrastructure, backend configuration/health, migrations, 17 backend tests and successful GitHub backend CI; PR #1 merged.
+3. **Complete locally:** typed repositories, registration/login/refresh/logout, admin provisioning, role/cohort access; 45 total backend tests pass. Push and remote CI remain pending.
+4. **Next:** teacher workflows: cohort membership and assignment/rubric management.
 5. Real submissions: archive validation, storage, queue and status lifecycle.
 6. Isolated grading: sandbox constraints, timeouts, results, coverage and scoring.
 7. Security scans and AI guidance: findings, severity mapping, hints and caching.
@@ -13,7 +13,7 @@ Updated October 4, 2026 (America/Chicago). Eight sessions are a working plan, no
 
 ## Current stop point
 
-Session 2 ends here. Do not add authentication or real student-code execution in this session. Backend tests and live service checks must pass before handoff. Remote backend CI is unverified until the feature branch is pushed.
+Session 3 ends here. Authentication is implemented and tested at the API level; the frontend remains a sample-data prototype. Session 4 starts with teacher CRUD workflows. No real student-code execution has been added. See SESSION_3.md for setup and verification.
 
 ## Commit discipline
 
