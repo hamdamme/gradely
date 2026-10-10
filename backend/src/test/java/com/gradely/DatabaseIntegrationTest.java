@@ -46,7 +46,7 @@ class DatabaseIntegrationTest {
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(response.getBody()).isEqualTo("{\"status\":\"UP\"}");
     }
-    @Test void nonHealthEndpointsAreClosedUntilAuthenticationExists() {
+    @Test void unknownEndpointsRequireAuthentication() {
         assertThat(http.getForEntity("/api/v1/users", String.class).getStatusCode().value()).isEqualTo(401);
     }
     @Test void rejectsInvalidRole() {
@@ -54,6 +54,10 @@ class DatabaseIntegrationTest {
     }
     @Test void rejectsDuplicateEmail() {
         user("student@fixture.local", "STUDENT");
+        assertThatThrownBy(() -> user("student@fixture.local", "STUDENT")).isInstanceOf(DataIntegrityViolationException.class);
+    }
+    @Test void rejectsCaseVariantEmail() {
+        user("Student@fixture.local", "STUDENT");
         assertThatThrownBy(() -> user("student@fixture.local", "STUDENT")).isInstanceOf(DataIntegrityViolationException.class);
     }
     @Test void rejectsOrphanCohort() {
