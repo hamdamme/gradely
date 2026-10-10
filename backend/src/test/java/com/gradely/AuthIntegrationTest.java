@@ -40,6 +40,7 @@ class AuthIntegrationTest {
     @Autowired UserRepository users;
     @Autowired PasswordEncoder passwords;
     @Autowired TokenService tokens;
+    @Autowired AuthService auth;
     @Autowired com.gradely.cohorts.CohortAccess access;
     static final String PASSWORD = "fixture-password-123";
     @BeforeEach void clean() { jdbc.execute("TRUNCATE users CASCADE"); }
@@ -99,6 +100,20 @@ class AuthIntegrationTest {
             assertThat(jdbc.queryForObject("SELECT count(*) FROM refresh_tokens", Integer.class)).isEqualTo(1);
         } finally { pool.shutdownNow(); }
     }
+    @Test void failedRefreshIssuanceRollsBackConsumption() {
+        fixture("student@fixture.local", Role.STUDENT);
+        var session = login("student@fixture.local");
+        String oldHash = AuthService.hash(session.refreshToken());
+        // A test-only constraint simulates a database failure when storing the replacement token.
+        jdbc.execute("ALTER TABLE refresh_tokens ADD CONSTRAINT fixture_reject_replacement CHECK (token_hash='" + oldHash + "')");
+        try {
+            assertThatThrownBy(() -> auth.refresh(session.refreshToken())).isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
+            assertThat(jdbc.queryForObject("SELECT token_hash FROM refresh_tokens", String.class)).isEqualTo(oldHash);
+        } finally {
+            jdbc.execute("ALTER TABLE refresh_tokens DROP CONSTRAINT fixture_reject_replacement");
+        }
+        assertThat(post("/auth/refresh", Map.of("refreshToken", session.refreshToken())).getStatusCode().value()).isEqualTo(200);
+    }
     @Test void expiredRefreshIsRejectedAndLogoutIsIdempotent() {
         fixture("student@fixture.local", Role.STUDENT);
         var expired = login("student@fixture.local");
@@ -107,6 +122,8 @@ class AuthIntegrationTest {
         var current = login("student@fixture.local");
         for (int i = 0; i < 2; i++) assertThat(post("/auth/logout", Map.of("refreshToken", current.refreshToken())).getStatusCode().value()).isEqualTo(204);
         assertThat(post("/auth/refresh", Map.of("refreshToken", current.refreshToken())).getStatusCode().value()).isEqualTo(401);
+        // Logout revokes the refresh token; already-issued access tokens retain their short lifetime.
+        assertThat(get("/auth/me", current.accessToken()).getStatusCode().value()).isEqualTo(200);
     }
     @Test void rejectsMissingMalformedTamperedAndExpiredAccess() {
         var user = fixture("student@fixture.local", Role.STUDENT);

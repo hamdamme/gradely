@@ -33,6 +33,17 @@ class TokenServiceTest {
         assertThatThrownBy(() -> tokens.verify(parts[0] + "." + parts[1] + "." + signature)).isInstanceOf(JwtException.class);
         assertThatThrownBy(() -> tokens.verify("not.a.jwt")).isInstanceOf(JwtException.class);
     }
+    @Test void rejectsWrongIssuerUsageAlgorithmAndMissingExpiration() {
+        var tokens = new TokenService(SECRET, 60, 7, NOW);
+        var key = io.jsonwebtoken.security.Keys.hmacShaKeyFor(SECRET.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        var expiration = java.util.Date.from(NOW.instant().plusSeconds(60));
+        String wrongIssuer = io.jsonwebtoken.Jwts.builder().issuer("another-app").claim("token_use", "access").expiration(expiration).signWith(key, io.jsonwebtoken.Jwts.SIG.HS256).compact();
+        String wrongUsage = io.jsonwebtoken.Jwts.builder().issuer("gradely").claim("token_use", "refresh").expiration(expiration).signWith(key, io.jsonwebtoken.Jwts.SIG.HS256).compact();
+        String wrongAlgorithm = io.jsonwebtoken.Jwts.builder().issuer("gradely").claim("token_use", "access").expiration(expiration).signWith(key, io.jsonwebtoken.Jwts.SIG.HS512).compact();
+        String missingExpiration = io.jsonwebtoken.Jwts.builder().issuer("gradely").claim("token_use", "access").signWith(key, io.jsonwebtoken.Jwts.SIG.HS256).compact();
+        for (String invalid : java.util.List.of(wrongIssuer, wrongUsage, wrongAlgorithm, missingExpiration))
+            assertThatThrownBy(() -> tokens.verify(invalid)).isInstanceOf(JwtException.class);
+    }
     @Test void rejectsInvalidConfiguration() {
         assertThatThrownBy(() -> new TokenService("short", 60, 7, NOW)).isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> new TokenService(SECRET, 0, 7, NOW)).isInstanceOf(IllegalArgumentException.class);
