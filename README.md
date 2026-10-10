@@ -4,9 +4,9 @@ Automated grading and security feedback for Java test-automation students.
 
 ## Current milestone
 
-Session 3 is complete locally: the Java 17 / Spring Boot backend now supports registration, login, rotating tokens, admin provisioning and cohort access checks. All 45 backend tests pass against disposable PostgreSQL containers. Compose runs PostgreSQL, RabbitMQ and MinIO on dedicated loopback ports.
+Sessions 4 and 5 are complete locally: teacher cohort/assignment APIs, validated ZIP uploads to MinIO, durable queue dispatch and submission status APIs now join the authentication backend. All 62 backend tests pass with disposable PostgreSQL, MinIO and RabbitMQ containers. Compose runs PostgreSQL, RabbitMQ and MinIO on dedicated loopback ports.
 
-The approved React prototype remains unchanged: a teacher overview and split submission review, with sample-data student pages. UI authentication integration, real uploads, storage/queue integration, grading and AI remain future work. See [Session 3](docs/SESSION_3.md) for the API, optional admin setup and token behavior.
+The approved React prototype remains unchanged: a teacher overview and split submission review, with sample-data student pages. UI/API integration, grading and AI remain future work. Real API uploads stay QUEUED until Session 6 adds a worker. See [Sessions 4–5](docs/SESSION_4_5.md) for endpoints, upload limits and delivery behavior, and [Session 3](docs/SESSION_3.md) for optional admin setup.
 
 ## Backend and infrastructure
 
@@ -74,7 +74,7 @@ The prototype keeps React 18. Patched Vite, Router, Vitest, and compatible TypeS
 
 ## GitHub
 
-Public repository: https://github.com/hamdamme/gradely. Session 1 is published on main and its frontend workflow passed. Session 2 was merged through PR #1 and its backend CI passed. Session 3 is verified locally on `session-3/authentication`; its push and remote CI remain pending.
+Public repository: https://github.com/hamdamme/gradely. Session 1 is published on main and its frontend workflow passed. Session 2 was merged through PR #1 and its backend CI passed. Sessions 3–5 are verified locally on `session-4-5/teacher-submissions`; publishing/review and remote CI verification remain pending.
 
 [Frontend Actions run verified at session start](https://github.com/hamdamme/gradely/actions/runs/37161397951).
 

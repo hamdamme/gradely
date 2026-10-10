@@ -47,3 +47,6 @@ New backend CI workflow is added but has not run remotely. Frontend files were n
 
 ## Session 3 — October 9, 2026
 Session 2 was merged through PR #1; branch and PR backend checks passed. Session 3 is now complete locally on session-3/authentication. See SESSION_3.md for endpoints, optional first-admin configuration, token limitations and the restart procedure. All 45 backend tests and Maven verify pass. No real accounts were created; integration fixtures used disposable databases. Frontend and user-owned gradely_mindtek files were untouched. Session 3 has not been pushed or checked by remote CI. Stop here; Session 4 is teacher cohort/member/assignment management.
+
+## Sessions 4 and 5 — October 9, 2026
+Branch session-4-5/teacher-submissions continues Session 3 history. Delivered teacher cohorts/enrollment, assignment/rubric APIs, Swagger UI, bounded ZIP validation, real MinIO storage, durable RabbitMQ outbox dispatch, submission reads and conditional status transitions. All 62 tests pass against disposable services. See SESSION_4_5.md for limits, setup and failure semantics. No grading worker or frontend API integration exists yet; submissions stay QUEUED. Local commits only; push/remote CI remain pending. Stop here before Session 6.
