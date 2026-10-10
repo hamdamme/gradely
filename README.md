@@ -74,9 +74,9 @@ The prototype keeps React 18. Patched Vite, Router, Vitest, and compatible TypeS
 
 ## GitHub
 
-Public repository: https://github.com/hamdamme/gradely. Session 1 is published on main and its frontend workflow passed. Session 2 was merged through PR #1 and its backend CI passed. Sessions 3–5 are verified locally on `session-4-5/teacher-submissions`; publishing/review and remote CI verification remain pending.
+Public repository: https://github.com/hamdamme/digital-grader. Session 1 is published on main and its frontend workflow passed. Session 2 was merged through PR #1 and its backend CI passed. Sessions 3–5 are verified locally on `session-4-5/teacher-submissions`; publishing/review and remote CI verification remain pending.
 
-[Frontend Actions run verified at session start](https://github.com/hamdamme/gradely/actions/runs/37161397951).
+[Frontend Actions run verified at session start](https://github.com/hamdamme/digiatl-grader/actions/runs/37161397951).
 
 ## License
 
