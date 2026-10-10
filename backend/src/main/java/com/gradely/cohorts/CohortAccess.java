@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 public class CohortAccess {
     private final CohortRepository cohorts;
     public CohortAccess(CohortRepository cohorts) { this.cohorts = cohorts; }
+    public void requireManage(long id, User.Profile user) {
+        boolean allowed = user != null && cohorts.find(id).map(c -> user.role() == Role.ADMIN
+                || (user.role() == Role.INSTRUCTOR && c.instructorId() == user.id())).orElse(false);
+        if (!allowed) throw new com.gradely.common.ApiException(org.springframework.http.HttpStatus.FORBIDDEN, "Access denied");
+    }
     public boolean canRead(long id, User.Profile user) {
         if (user == null) return false;
         return cohorts.find(id).map(cohort -> user.role() == Role.ADMIN

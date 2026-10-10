@@ -1,8 +1,8 @@
 package com.gradely.cohorts;
 
 import java.util.List;
-import com.gradely.common.ApiException;
 import com.gradely.users.User;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/cohorts")
 @PreAuthorize("hasAnyRole('INSTRUCTOR','ADMIN')")
 public class CohortController {
-    private final CohortRepository cohorts;
-    public CohortController(CohortRepository cohorts) { this.cohorts = cohorts; }
+    private final CohortService cohorts;
+    public CohortController(CohortService cohorts) { this.cohorts=cohorts; }
+    @PostMapping @ResponseStatus(HttpStatus.CREATED)
+    public CohortRepository.Cohort create(@Valid @RequestBody CohortService.Create request, @AuthenticationPrincipal User.Profile user) { return cohorts.create(request,user); }
+    @PostMapping("/{id}/members") @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void members(@PathVariable long id, @Valid @RequestBody CohortService.Members request, @AuthenticationPrincipal User.Profile user) { cohorts.addMembers(id,request,user); }
     @GetMapping("/mine")
-    public List<CohortRepository.Cohort> mine(@AuthenticationPrincipal User.Profile user) { return cohorts.forInstructor(user.id()); }
+    public List<CohortService.Summary> mine(@AuthenticationPrincipal User.Profile user) { return cohorts.mine(user); }
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('INSTRUCTOR','ADMIN') and @cohortAccess.canRead(#id, authentication.principal)")
-    public CohortRepository.Cohort read(@PathVariable long id) {
-        return cohorts.find(id).orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Cohort not found"));
-    }
+    public CohortService.Detail read(@PathVariable long id, @AuthenticationPrincipal User.Profile user) { return cohorts.detail(id,user); }
 }
