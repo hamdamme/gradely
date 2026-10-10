@@ -190,6 +190,47 @@ class AuthIntegrationTest {
         assertThat(denied.getStatusCode().value()).isEqualTo(403);
         assertThat(denied.getHeaders().getAccessControlAllowOrigin()).isNull();
     }
+    @Test void teacherCreatesCohortEnrollsStudentsAndPublishesAssignment() throws Exception {
+        String teacher = tokens.issue(fixture("teacher@fixture.local", Role.INSTRUCTOR));
+        var student = fixture("student@fixture.local", Role.STUDENT);
+        var created = request(HttpMethod.POST,"/cohorts",Map.of("name","Java","startDate","2026-10-01","endDate","2027-03-31"),teacher);
+        assertThat(created.getStatusCode().value()).isEqualTo(201);
+        long cohort = new com.fasterxml.jackson.databind.ObjectMapper().readTree(created.getBody()).get("id").asLong();
+        for (int i=0;i<2;i++) assertThat(request(HttpMethod.POST,"/cohorts/"+cohort+"/members",Map.of("studentIds",List.of(student.id(),student.id())),teacher).getStatusCode().value()).isEqualTo(204);
+        assertThat(get("/cohorts/mine",teacher).getBody()).contains("\"studentCount\":1");
+        assertThat(get("/cohorts/"+cohort,teacher).getBody()).contains(student.email()).doesNotContain("password");
+        var assignment = request(HttpMethod.POST,"/assignments",assignmentBody(cohort,60),teacher);
+        assertThat(assignment.getStatusCode().value()).isEqualTo(201);
+        long id = new com.fasterxml.jackson.databind.ObjectMapper().readTree(assignment.getBody()).get("id").asLong();
+        assertThat(get("/assignments/"+id,tokens.issue(student)).getStatusCode().value()).isEqualTo(200);
+        assertThat(get("/assignments?cohortId="+cohort,tokens.issue(student)).getBody()).contains("Exercise");
+        var outsider = tokens.issue(fixture("outsider@fixture.local",Role.STUDENT));
+        assertThat(get("/assignments/"+id,outsider).getStatusCode().value()).isEqualTo(403);
+        assertThat(request(HttpMethod.POST,"/assignments",assignmentBody(cohort,60),tokens.issue(student)).getStatusCode().value()).isEqualTo(403);
+    }
+    @Test void teacherWritesEnforceOwnershipValidationAndAtomicMembership() {
+        var owner=fixture("owner@fixture.local",Role.INSTRUCTOR);
+        var student=fixture("student@fixture.local",Role.STUDENT);
+        var other=fixture("other@fixture.local",Role.INSTRUCTOR);
+        long cohort=jdbc.queryForObject("INSERT INTO cohorts(name,instructor_id,start_date,end_date) VALUES ('Fixture',?,'2026-10-01','2027-03-31') RETURNING id",Long.class,owner.id());
+        String token=tokens.issue(owner);
+        assertThat(request(HttpMethod.POST,"/cohorts",Map.of("name","Bad","startDate","2027-01-01","endDate","2026-01-01"),token).getStatusCode().value()).isEqualTo(400);
+        assertThat(request(HttpMethod.POST,"/cohorts/"+cohort+"/members",Map.of("studentIds",List.of(student.id(),other.id())),token).getStatusCode().value()).isEqualTo(400);
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM cohort_members",Integer.class)).isZero();
+        assertThat(request(HttpMethod.POST,"/cohorts/"+cohort+"/members",Map.of("studentIds",List.of(student.id())),tokens.issue(other)).getStatusCode().value()).isEqualTo(403);
+        assertThat(request(HttpMethod.POST,"/assignments",assignmentBody(cohort,50),token).getStatusCode().value()).isEqualTo(400);
+        assertThat(request(HttpMethod.POST,"/assignments",assignmentBody(cohort,60),tokens.issue(other)).getStatusCode().value()).isEqualTo(403);
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM assignments",Integer.class)).isZero();
+    }
+    @Test void openApiDocumentsTeacherAndAuthEndpoints() {
+        var response=http.getForEntity("/v3/api-docs",String.class);
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getBody()).contains("/api/v1/auth/login","/api/v1/cohorts/{id}/members","/api/v1/assignments","bearerAuth");
+        assertThat(http.getForEntity("/swagger-ui/index.html",String.class).getStatusCode().value()).isEqualTo(200);
+    }
+    private Map<String,Object> assignmentBody(long cohort,int tests) {
+        return Map.of("cohortId",cohort,"title","Exercise","rubricJson",Map.of("weights",Map.of("tests",tests,"coverage",20,"codeQuality",20),"coverageThreshold",70,"qualityChecks",List.of("checkstyle","spotbugs")));
+    }
     private User fixture(String email, Role role) { return users.create(email, passwords.encode(PASSWORD), "Fixture", role); }
     private Map<String, String> registration(String email, String role) { return Map.of("email", email, "password", PASSWORD, "fullName", "Fixture", "role", role); }
     private AuthService.Tokens login(String email) {
